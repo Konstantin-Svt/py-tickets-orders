@@ -137,7 +137,8 @@ class OrderCreateSerializer(serializers.ModelSerializer):
             tickets = validated_data.pop("tickets")
             order = Order.objects.create(**validated_data)
             for ticket_data in tickets:
-                ticket = Ticket(order=order, **ticket_data).validate_seats(
+                ticket = Ticket(order=order, **ticket_data)
+                ticket.validate_seats(
                     error_to_raise=drf_exceptions.ValidationError
                 )
                 ticket.save()
